@@ -1,0 +1,68 @@
+{{#if orders}}
+<section>
+    <div class="container">
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Pincode</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Amount</th>
+                     <th scope="col">Payment</th>
+                    <th scope="col">Status</th>
+                    <td></td>
+
+                   
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    
+                    <td>{{this.date}}</td>
+                    <td>{{this.deliveryDetails.address}}</td>
+                    <td>{{this.deliveryDetails.pincode}}</td>
+                    <td>{{this.deliveryDetails.mobile}}</td>
+                    
+                    <td>Rs. {{this.totalAmount}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.status}}</td>
+
+                    <td>
+                    
+                   <a href="/view-order-products/{{this._id}}" class="btn btn-primary">View Products</a>
+                    <button class="cart-item-count btn btn-danger mt-2" id="remove-button" onclick="openPopup()" >Cancel Order</button>
+                    </td>
+                </tr>
+                <div class="popup" id="popup">
+                                <h5>Do you want to delete</h5>
+                                <button class="btn btn-white mt-3" onclick="closePopup()">Cancel</button>
+                                <button class="btn btn-success mt-3" onclick="removeOrder('{{this._id}}','{{this.userId}}')">Ok</button>
+                            </div>
+
+                {{/each}}
+               
+        
+            </tbody>
+        </table>
+    </div>
+</section>
+{{else}}
+<h1 class="cart-empty text-secondary">No orders</h1>
+{{/if}}
+
+<script>
+    let popup= document.getElementById('popup')
+
+        function openPopup(){
+            popup.classList.add('open-popup')
+        }
+
+        function closePopup(){
+            popup.classList.remove('open-popup')
+        }
+</script>
+
+

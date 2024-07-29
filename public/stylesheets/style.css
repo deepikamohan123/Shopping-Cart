@@ -1,0 +1,61 @@
+input[type=radio]{
+    width: 20px;
+    height: 20px;
+}
+
+label.radio-inline{
+    display: flex;
+    align-items: center;
+    
+}
+
+.checkout{
+    border: 2px solid;
+    border-radius: 3px;
+    padding: 20px;
+    height: 250px;
+}
+
+.cart-empty{
+    text-align: center;
+    margin:100px;
+}
+
+.popup{
+    width: 400px;
+    background: #fff;
+    border-radius: 6px;
+    top: 0;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%) scale(0.1);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+    border: 2px solid;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+}
+
+.open-popup{
+    visibility: visible;
+    top: 40%;
+    transform: translate(-50%,-50%) scale(1);
+}
+.popup h2{
+    font-size: 38px;
+    font-weight: 500;
+    margin: 30px 0 10px;
+}
+
+.popup button{
+    margin-right: 10px;
+    width: 120px;
+}
+
+.popup a{
+    margin-left: 30px;
+}
+
+
+

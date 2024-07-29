@@ -1,0 +1,74 @@
+{{#if this.total}}
+
+<section>
+    <div class="container">
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th></th>
+
+                   
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    
+                    <td><img src="/product-images/{{this.product._id}}.jpg" style="width:100px; height:auto"></td>
+                    <td>{{this.product.name}}</td>
+                    <td>Rs. {{this.product.price}}</td>
+            
+                    <td>
+                        <button class="card-item-count mr-2 btn btn-info" id="cart-button" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+                        <button class="card-item-count ml-2 btn btn-info" id="cart-button" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
+                    </td>
+
+                    <td>
+                    
+                    <button class="cart-item-count btn btn-danger" id="remove-button"  onclick="openPopup()">Remove</button>
+                    </td>
+                </tr>
+                <div class="popup" id="popup">
+                                <h5>Do you want to delete {{this.product.name}}</h5>
+                                <button class="btn btn-white mt-3" onclick="closePopup()">Cancel</button>
+                                <button class="btn btn-success mt-3" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Ok</button>
+                            </div>
+
+                {{/each}}
+               
+        
+            </tbody>
+        </table>
+         <hr>
+         <div class="float-right pr-5">
+             <h4 class="float-right mr-5 ">Total: Rs. <span id="total">{{this.total}}</span></h4><br>
+             <a href="/place-order" class="btn btn-success float-right mt-3 text-white" style="width: 100%;">Place Order</a>
+             </div>
+             
+    </div>
+</section>
+{{else}}
+<h1 class="cart-empty text-secondary">Cart is empty</h1>
+{{/if}}
+
+<script>
+    let popup= document.getElementById('popup')
+
+        function openPopup(){
+            popup.classList.add('open-popup')
+        }
+
+        function closePopup(){
+            popup.classList.remove('open-popup')
+        }
+</script>
+
+
+
+

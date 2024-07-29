@@ -1,0 +1,51 @@
+{{#if users}}
+<section>
+    <div class="container">
+        <table id="user-table" class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Pincode</th>
+                     <th scope="col">Mobile</th>
+                     <th scope="col">Options</th>
+
+                   
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                    <td></td>
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td>
+                    
+                   <a href="/admin/view-orders/{{this._id}}" class="btn btn-primary">View Orders</a>
+                    </td>
+                </tr>
+               
+
+                {{/each}}
+               
+        
+            </tbody>
+        </table>
+    </div>
+</section>
+{{else}}
+<h1 class="cart-empty text-secondary">No users</h1>
+{{/if}}
+
+<script>
+    $(document).ready( function () {
+    $('#user-table').DataTable();
+} );
+</script>

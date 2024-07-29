@@ -1,0 +1,140 @@
+
+<section>
+    <div class="container mt-5">
+        <form action="" method="post" id="checkout-form">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Enter Delivery Details</h2>
+                    <div>
+                        <label for="">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" value="{{details.address}}">
+
+                        <label for="">Pincode</label>
+                        <input type="text" class="form-control" id="pincode" name="pincode" value="{{details.pincode}}">
+
+                        <label for="">Mobile</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile" value="{{details.mobile}}">
+
+                        <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="container mt-5 ml-5 checkout">
+                        <h5>Total Amount : Rs.{{this.total}}</h5>
+                        <hr>
+                        <div class="payment">
+                            <p>Payment method</p>
+                            <label class="radio-inline">
+                                <input type="radio" name="payment-method" value="COD">COD
+                            </label>
+                            <label class="radio-inline mt-2">
+                                <input type="radio" name="payment-method" value="ONLINE">Online payment
+                            </label>
+                            <button class="btn btn-primary float-right" type="submit">Checkout</button>
+                            <div class="popup" id="popup">
+                                <h2 class="">Thank you</h2>
+                                <p>Your order has successfully placed. Thanks!</p>
+                                {{!-- <button class="btn btn-white" onclick="closePopup()">Close</button> --}}
+                                <a href="/orders" class="btn btn-info m-2">Go to orders</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+    </div>
+</section>
+
+<script>
+     
+        //this is the form of checkout.
+        $("#checkout-form").submit((e)=>{
+            e.preventDefault()   //prevent the submission of the form.
+            $.ajax({
+                url:'/place-order',
+                method:'post',
+                data:$('#checkout-form').serialize(), //to get all data in the form use serialize.
+                success:(response)=>{
+                    if(response.codSuccess){
+                        
+                        openPopup()
+                        document.getElementById('cart-count').innerHTML=0
+                    } else{
+                        //console.log(response)   - this is a json response it will only be visible in the console from inspect.
+                        razorpayPayment(response)
+                }
+                }
+            })
+        })
+
+
+        let popup= document.getElementById('popup')
+
+        function openPopup(){
+            popup.classList.add('open-popup')
+        }
+
+        function closePopup(){
+            popup.classList.remove('open-popup')
+        }
+
+                function razorpayPayment(order){
+                    //console.log(order)
+            var options = {
+    "key": "rzp_test_VTRSmCsdBgB7Xw", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Deepika", //your business name
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+    "handler": function(response){
+        //alert(response.razorpay_payment_id)
+        //alert(response.razorpay_order_id)
+        //alert(response.razorpay_signature)
+
+        verifyPayment(response,order)
+    },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+    rzp1.open();
+
+        }
+
+        function verifyPayment(payment,order){
+            $.ajax({
+                url:'/verify-payment',
+                data:{
+                    payment,
+                    order
+                },
+                method:'post',
+                success:(response)=>{
+                    console.log(response)
+                    if(response.status){
+                        openPopup()
+                        document.getElementById('cart-count').innerHTML=0
+                    } else{
+                        alert('Payment Failed')
+                    }
+                }
+            })
+        }
+    
+
+        
+        
+</script>
