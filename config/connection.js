@@ -4,7 +4,7 @@ const state={     //this is an object created for db
 }
 
 module.exports.connect = function(done){   //done is callback
-    const url = 'mongodb://localhost:27017'
+    const url = 'mongodb://localhost:27018'
     const dbname='shopping'
 
     mongoClient.connect(url,(err,data)=>{
